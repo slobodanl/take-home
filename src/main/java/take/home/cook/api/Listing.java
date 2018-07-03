@@ -4,18 +4,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import take.home.cook.api.repository.BookRepository;
+import take.home.cook.api.model.user.domain.UserType;
+import take.home.cook.api.repository.UserRepository;
 
 @Component
 @Order(2)
 public class Listing implements CommandLineRunner {
 
     @Autowired
-    BookRepository bookRepository;
+    UserRepository userRepository;
 
     @Override
     public void run(String... args) throws Exception {
-        bookRepository.findAll().forEach(System.out::println);
-        bookRepository.findByTitleAndPublisher("Test" , "test");
+        userRepository.findAll().forEach(System.out::println);
+        userRepository.findByUserKeyType(UserType.COOK.getType()).forEach(System.out::println);
+       // userRepository.findByTitleAndPublisher("Test" , "test");
     }
 }

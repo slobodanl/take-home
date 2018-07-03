@@ -6,21 +6,21 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
-import take.home.cook.api.domain.Book;
-import take.home.cook.api.repository.BookRepository;
+import take.home.cook.api.model.user.domain.User;
+import take.home.cook.api.model.user.domain.UserKey;
+import take.home.cook.api.model.user.domain.UserType;
+import take.home.cook.api.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 @SpringBootApplication
 public class ParentApplication implements CommandLineRunner {
 
 	@Autowired
-	BookRepository bookRepository;
+	UserRepository userRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ParentApplication.class, args);
@@ -29,13 +29,13 @@ public class ParentApplication implements CommandLineRunner {
 	@Override
 	@Order(1)
 	public void run(String... args) throws Exception {
-		List<Book> books = new ArrayList<>();
-		bookRepository.deleteAll();
+		List<User> users = new ArrayList<>();
+		userRepository.deleteAll();
 		Stream.of(1,2,3,4,5,6,7,8,9).forEach(i -> {
-			Book book = new Book(UUIDs.timeBased() , String.format("Book %s" , i ) , String.format("Publisher %s" , i ) , Collections.emptySet());
-			books.add(book);
+			User user = new User(new UserKey(UUIDs.timeBased() , UserType.COOK.getType()) , String.format("User %s" , i ) , String.format("Publisher %s" , i ) , ""  , "");
+			users.add(user);
 		});
 
-		bookRepository.saveAll(books);
+		userRepository.saveAll(users);
 	}
 }

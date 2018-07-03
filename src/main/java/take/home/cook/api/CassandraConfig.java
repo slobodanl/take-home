@@ -1,31 +1,40 @@
 package take.home.cook.api;
 
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
-import org.springframework.data.cassandra.config.CassandraClusterFactoryBean;
 import org.springframework.data.cassandra.config.SchemaAction;
-import org.springframework.data.cassandra.core.mapping.BasicCassandraMappingContext;
-import org.springframework.data.cassandra.core.mapping.CassandraMappingContext;
 import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
 
 @Configuration
-@EnableCassandraRepositories(
-        basePackages = "take.home.cook.api.repository")
+@EnableCassandraRepositories
 public class CassandraConfig extends AbstractCassandraConfiguration {
+
+    @Value("${cassandra.contactpoints}")
+    private String contactPoints;
+
+    @Value("${cassandra.port}")
+    private int port;
+
+    @Value("${cassandra.keyspace}")
+    private String keySpace;
+
+    @Value("${cassandra.basepackages}")
+    private String basePackages;
 
     @Override
     protected String getKeyspaceName() {
-        return "thcKeyspace";
+        return keySpace;
     }
 
-    @Bean
-    public CassandraClusterFactoryBean cluster() {
-        CassandraClusterFactoryBean cluster =
-                new CassandraClusterFactoryBean();
-        cluster.setContactPoints("127.0.0.1");
-        cluster.setPort(9042);
-        return cluster;
+    @Override
+    protected String getContactPoints() {
+        return contactPoints;
+    }
+
+    @Override
+    protected int getPort() {
+        return port;
     }
 
     @Override
@@ -33,14 +42,8 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
         return SchemaAction.CREATE_IF_NOT_EXISTS;
     }
 
-    @Bean
-    public CassandraMappingContext cassandraMapping()
-            throws ClassNotFoundException {
-        return new BasicCassandraMappingContext();
-    }
-
     @Override
     public String[] getEntityBasePackages() {
-        return new String[] {"take.home.cook.api.domain"};
+        return new String[] {basePackages};
     }
 }
