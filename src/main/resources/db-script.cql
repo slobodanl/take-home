@@ -2,18 +2,6 @@ CREATE KEYSPACE thcKeyspace WITH REPLICATION = {'class' : 'SimpleStrategy', 'rep
 
 USE thcKeyspace;
 
-DROP TABLE IF EXISTS user;
-
-CREATE TABLE user (
-    user_id UUID,
-    user_type text,
-    first_name text,
-    last_name text,
-    address text,
-    phone text,
-    PRIMARY KEY ((user_type, user_id))
-);
-
 
 DROP TABLE IF EXISTS user;
 
@@ -26,6 +14,20 @@ CREATE TABLE user (
     phone text,
     PRIMARY KEY ((user_id) , user_type)
 ) WITH CLUSTERING ORDER BY(user_type DESC);
+
+
+DROP TABLE IF EXISTS user_by_type;
+
+CREATE TABLE user_by_type (
+    user_type text,
+    user_id UUID,
+    first_name text,
+    last_name text,
+    address text,
+    phone text,
+    PRIMARY KEY ((user_type) , user_id)
+) WITH CLUSTERING ORDER BY(user_id DESC);
+
 
 DROP TABLE IF EXISTS orders;
 
@@ -85,7 +87,7 @@ CREATE TABLE menu_items (
     item_name TEXT,
     item_description TEXT,
     item_added TIMESTAMP,
-    available INT,
+    available boolean,
     categories set<TEXT>,
     remarks set<TEXT>,
     tags set<TEXT>,
@@ -101,7 +103,7 @@ CREATE TABLE menu_items_by_user (
     item_name TEXT,
     item_description TEXT,
     item_added TIMESTAMP,
-    available INT,
+    available boolean,
     categories set<TEXT>,
     remarks set<TEXT>,
     tags set<TEXT>,
@@ -118,7 +120,7 @@ CREATE TABLE menu_items_by_category (
     item_name TEXT,
     item_description TEXT,
     item_added TIMESTAMP,
-    available INT,
+    available boolean,
     categories set<TEXT>,
     remarks set<TEXT>,
     tags set<TEXT>,

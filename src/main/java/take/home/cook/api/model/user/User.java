@@ -1,4 +1,4 @@
-package take.home.cook.api.model.user.domain;
+package take.home.cook.api.model.user;
 
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
@@ -27,14 +27,6 @@ public class User {
         this.lastName = lastName;
         this.address = address;
         this.phone = phone;
-    }
-
-    public UserKey getUserKey() {
-        return userKey;
-    }
-
-    public void setUserKey(UserKey userKey) {
-        this.userKey = userKey;
     }
 
     public String getFirstName() {
@@ -69,10 +61,18 @@ public class User {
         this.phone = phone;
     }
 
+    public UserKey getId() {
+        return userKey;
+    }
+
+    public void setId(UserKey userKey) {
+        this.userKey = userKey;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "userKey=" + userKey +
+                "id=" + userKey +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", address='" + address + '\'' +

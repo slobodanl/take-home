@@ -3,8 +3,6 @@ package take.home.cook.api;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
-import com.datastax.driver.core.utils.UUIDs;
-import com.google.common.collect.ImmutableSet;
 import org.apache.cassandra.exceptions.ConfigurationException;
 import org.apache.thrift.transport.TTransportException;
 import org.cassandraunit.spring.EmbeddedCassandra;
@@ -19,8 +17,8 @@ import org.springframework.data.cassandra.core.cql.CqlIdentifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
-import take.home.cook.api.model.user.domain.User;
-import take.home.cook.api.repository.UserRepository;
+import take.home.cook.api.model.user.User;
+import take.home.cook.api.repository.user.UserByTypeRepository;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -36,9 +34,9 @@ import static org.springframework.test.context.TestExecutionListeners.MergeMode.
 		mergeMode = MERGE_WITH_DEFAULTS
 )
 @EmbeddedCassandra
-public class UserRepositoryTests {
+public class UserByTypeRepositoryTests {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryTests.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserByTypeRepositoryTests.class);
 	public static final String KEYSPACE = "thcKeyspaceTest";
 
 	public static final String KEYSPACE_CREATION_QUERY = String.format("CREATE KEYSPACE IF NOT EXISTS %s WITH replication = { 'class': 'SimpleStrategy', 'replication_factor': '3' };" , KEYSPACE);
@@ -48,7 +46,7 @@ public class UserRepositoryTests {
 	public static final String DATA_TABLE_NAME = "book";
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserByTypeRepository userByTypeRepository;
 
 	@Autowired
 	private CassandraAdminOperations adminTemplate;

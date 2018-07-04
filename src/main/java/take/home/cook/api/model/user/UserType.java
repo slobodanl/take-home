@@ -1,4 +1,4 @@
-package take.home.cook.api.model.user.domain;
+package take.home.cook.api.model.user;
 
 import java.util.Objects;
 import java.util.stream.Stream;
