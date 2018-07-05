@@ -30,6 +30,12 @@ public class OrderByUser {
         private UUID orderId;
 
 
+        public Key(UUID userId, Date orderDate, UUID orderId) {
+            this.userId = userId;
+            this.orderDate = orderDate;
+            this.orderId = orderId;
+        }
+
         public UUID getUserId() {
             return userId;
         }
@@ -63,6 +69,11 @@ public class OrderByUser {
                     '}';
         }
     }
+
+    public OrderByUser(Key id) {
+        this.id = id;
+    }
+
     @PrimaryKey
     private Key id;
 
@@ -75,10 +86,9 @@ public class OrderByUser {
     }
 
 
-
     @Override
     public String toString() {
-        return "Order{" +
+        return "OrderByUser{" +
                 "id=" + id +
                 '}';
     }

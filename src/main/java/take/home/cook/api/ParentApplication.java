@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.annotation.Order;
 import org.springframework.data.cassandra.core.mapping.BasicMapId;
 import take.home.cook.api.model.menu.MenuItem;
+import take.home.cook.api.model.order.Order;
 import take.home.cook.api.model.user.User;
 import take.home.cook.api.model.user.UserKey;
 import take.home.cook.api.model.user.UserType;
@@ -43,7 +43,7 @@ public class ParentApplication implements CommandLineRunner {
 	}
 
 	@Override
-	@Order(1)
+
 	public void run(String... args) throws Exception {
 		List<User> users = new ArrayList<>();
 
@@ -74,6 +74,9 @@ public class ParentApplication implements CommandLineRunner {
 		menuItemRepository.findById(BasicMapId.id("id" , menuItem.getKey().getId())).ifPresent(System.out::println);
 		System.out.println("~~~~Query by category~~~~");
 		menuItemByCategoryRepository.findAll().forEach(System.out::println);
+        Order order = new Order();
+
+
 		// userByTypeRepository.findByUserKeyType(UserType.COOK.getType()).forEach(System.out::println);
 		// userRepository.findByTitleAndPublisher("Test" , "test");
 	}

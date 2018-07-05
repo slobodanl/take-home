@@ -1,9 +1,11 @@
 package take.home.cook.api.model.order;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Table("orders")
@@ -24,6 +26,11 @@ public class Order {
 
         @PrimaryKeyColumn(name="order_date" , ordinal = 1)
         private Date orderDate;
+
+        public Key(UUID orderId, Date orderDate) {
+            this.orderId = orderId;
+            this.orderDate = orderDate;
+        }
 
         public UUID getOrderId() {
             return orderId;
@@ -55,12 +62,20 @@ public class Order {
     @Column("user_id")
     private UUID userId;
 
+    @Column("delivery_date")
+    private Date deliveryDate;
+
     @Column("delivery_address")
     private String deliveryAddress;
 
     @Column("delivery_phone")
     private String deliveryPhone;
 
+    @Transient
+    private Integer recurringInterval;
+
+    @Transient
+    private List<OrderLine> orderLines;
 
     public Key getId() {
         return id;
@@ -92,6 +107,30 @@ public class Order {
 
     public void setDeliveryPhone(String deliveryPhone) {
         this.deliveryPhone = deliveryPhone;
+    }
+
+    public Date getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(Date deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
+
+    public List<OrderLine> getOrderLines() {
+        return orderLines;
+    }
+
+    public void setOrderLines(List<OrderLine> orderLines) {
+        this.orderLines = orderLines;
+    }
+
+    public Integer getRecurringInterval() {
+        return recurringInterval;
+    }
+
+    public void setRecurringInterval(Integer recurringInterval) {
+        this.recurringInterval = recurringInterval;
     }
 
     @Override

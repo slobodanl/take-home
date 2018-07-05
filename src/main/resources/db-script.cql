@@ -60,7 +60,7 @@ CREATE TABLE orders_by_cook (
     delivery_date TIMESTAMP,
     recurring_interval INT,
     next_delivery_date TIMESTAMP,
-    PRIMARY KEY ((cook_id , item_id , order_id) , next_delivery_date)
+    PRIMARY KEY ((cook_id , order_id) ,next_delivery_date , item_id )
 ) WITH CLUSTERING ORDER BY(next_delivery_date DESC);
 
 DROP TABLE IF EXISTS order_items;
@@ -75,8 +75,8 @@ CREATE TABLE order_items (
     cook_location TEXT,
     item_ordered UUID,
     item_name TEXT,
-    PRIMARY KEY ((order_id , item_ordered) , order_date)
-) WITH CLUSTERING ORDER BY(order_date DESC);
+    PRIMARY KEY ((order_id ) , user_id , order_date , item_ordered)
+) WITH CLUSTERING ORDER BY(user_id DESC , order_date DESC ,  item_ordered ASC);
 
 DROP TABLE IF EXISTS menu_items;
 
