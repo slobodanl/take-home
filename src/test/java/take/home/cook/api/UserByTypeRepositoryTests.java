@@ -17,6 +17,7 @@ import org.springframework.data.cassandra.core.cql.CqlIdentifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
+import take.home.cook.api.config.CassandraConfig;
 import take.home.cook.api.model.user.User;
 import take.home.cook.api.repository.user.UserByTypeRepository;
 

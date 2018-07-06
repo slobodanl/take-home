@@ -13,6 +13,7 @@ import java.util.UUID;
  *     order_id UUID,
  *     user_id UUID,
  *     order_date TIMESTAMP,
+ *     delivery_date TIMESTAMP,
  *     delivery_address text,
  *     delivery_phone text,
  *     PRIMARY KEY ((order_id) , order_date)

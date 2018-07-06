@@ -12,7 +12,6 @@ import take.home.cook.api.model.menu.MenuItemByUser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class MenuItemRepositoryImpl extends SimpleCassandraRepository<MenuItem, MapId>
         implements MenuItemRepository {
@@ -21,7 +20,7 @@ public class MenuItemRepositoryImpl extends SimpleCassandraRepository<MenuItem, 
     private final CassandraOperations operations;
 
 
-    public MenuItemRepositoryImpl(CassandraEntityInformation<MenuItem, MapId> metadata, CassandraOperations operations , MenuItemByUserRepository menuItemByUserRepository , MenuItemByCategoryRepository menuItemByCategoryRepository) {
+    public MenuItemRepositoryImpl(final CassandraEntityInformation<MenuItem, MapId> metadata, final CassandraOperations operations , final MenuItemByUserRepository menuItemByUserRepository , final MenuItemByCategoryRepository menuItemByCategoryRepository) {
         super(metadata, operations);
         this.operations = operations;
         this.menuItemByCategoryRepository = menuItemByCategoryRepository;

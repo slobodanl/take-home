@@ -36,17 +36,9 @@ public class OrderByCook {
         private UUID itemId;
 
 
-        public Key(UUID userId, UUID orderId,  UUID itemId , Date deliveryDate, Integer recurringInterval) {
+        public Key(UUID userId, UUID orderId,  UUID itemId) {
             this.userId = userId;
             this.orderId = orderId;
-            if (recurringInterval != null) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(deliveryDate);
-                calendar.add(Calendar.DATE , recurringInterval );
-                this.nextDeliveryDate = calendar.getTime();
-            } else {
-                this.nextDeliveryDate = deliveryDate;
-            }
             this.itemId = itemId;
         }
 
@@ -98,6 +90,14 @@ public class OrderByCook {
         this.itemName = itemName;
         this.orderDate = orderDate;
         this.deliveryDate = deliveryDate;
+        if (recurringInterval != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(deliveryDate);
+            calendar.add(Calendar.DATE , recurringInterval );
+            this.id.nextDeliveryDate = calendar.getTime();
+        } else {
+            this.id.nextDeliveryDate = deliveryDate;
+        }
         this.recurringInterval = recurringInterval;
     }
 

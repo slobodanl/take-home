@@ -3,6 +3,7 @@ package take.home.cook.api.repository.order;
 import com.datastax.driver.core.utils.UUIDs;
 import org.springframework.data.cassandra.core.CassandraBatchOperations;
 import org.springframework.data.cassandra.core.CassandraTemplate;
+import org.springframework.data.cassandra.core.mapping.BasicMapId;
 import org.springframework.data.cassandra.repository.query.CassandraEntityInformation;
 import org.springframework.data.cassandra.repository.support.SimpleCassandraRepository;
 import take.home.cook.api.model.order.Order;
@@ -60,13 +61,13 @@ public class OrderRepositoryImpl extends SimpleCassandraRepository<Order, UUID>
 
     private void insertOrderByCook(Order order , CassandraBatchOperations batchOps) {
         order.getOrderLines().forEach(ol ->
-            batchOps.insert( new OrderByCook(new OrderByCook.Key(ol.getCookId() , order.getId().getOrderId() , ol.getItemId() , order.getDeliveryDate() , order.getRecurringInterval()) , menuItemByUserRepository.findByKeyIdAndKeyItemId(ol.getCookId() , ol.getItemId()).getName() , order.getId().getOrderDate() , order.getDeliveryDate() , order.getRecurringInterval()))
+            batchOps.insert( new OrderByCook(new OrderByCook.Key(ol.getCookId() , order.getId().getOrderId() , ol.getItemId()) , menuItemByUserRepository.findByKeyIdAndKeyItemId(ol.getCookId() , ol.getItemId()).getName() , order.getId().getOrderDate() , order.getDeliveryDate() , order.getRecurringInterval()))
         );
     }
 
     private void insertOrderByItem(Order order , CassandraBatchOperations batchOps) {
         order.getOrderLines().forEach(ol -> {
-                final User cook = userRepository.findById(ol.getCookId()).orElseThrow(() -> new RuntimeException("Cannot locate cook by id!"));
+                final User cook = userRepository.findById(BasicMapId.id("id" , ol.getCookId())).orElseThrow(() -> new RuntimeException("Cannot locate cook by id!"));
                 batchOps.insert( new OrderByItem(new OrderByItem.Key(order.getId().getOrderId() , order.getUserId() , order.getId().getOrderDate() , ol.getItemId()) , ol.getCookId() , cook.getFirstName() + " " + cook.getLastName() , cook.getId().getId() , cook.getAddress() ,  menuItemByUserRepository.findByKeyIdAndKeyItemId(ol.getCookId() , ol.getItemId()).getName()));
             }
         );

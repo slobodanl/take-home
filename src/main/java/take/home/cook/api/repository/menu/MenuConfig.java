@@ -9,12 +9,10 @@ import org.springframework.data.cassandra.repository.query.CassandraEntityInform
 import org.springframework.data.cassandra.repository.support.MappingCassandraEntityInformation;
 import take.home.cook.api.model.menu.MenuItem;
 
-import java.util.UUID;
-
 @Configuration
 public class MenuConfig {
     @Bean
-    public MenuItemRepository createMenuItemRepository(final CassandraTemplate cassandraTemplate, MenuItemByCategoryRepository menuItemByCategoryRepository , MenuItemByUserRepository menuItemByUserRepository) {
+    public MenuItemRepository createMenuItemRepository(final CassandraTemplate cassandraTemplate, final MenuItemByCategoryRepository menuItemByCategoryRepository , final MenuItemByUserRepository menuItemByUserRepository) {
         final CassandraPersistentEntity<?> entity =
                 cassandraTemplate
                         .getConverter()
