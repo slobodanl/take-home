@@ -1,28 +1,27 @@
 package take.home.cook.api.resource.valueobjects;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import take.home.cook.api.model.user.User;
 import take.home.cook.api.model.user.UserByType;
+import take.home.cook.api.resource.utils.VOUtils;
 
 import java.util.UUID;
 
 public class UserVO {
+    public UserVO() {
+    }
 
     public UserVO(User user) {
+        VOUtils.copyProperties(this , user);
         this.id = user.getId().getId();
         this.type = user.getId().getType();
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
-        this.address = user.getAddress();
-        this.phone = user.getPhone();
     }
 
     public UserVO(UserByType user) {
+        VOUtils.copyProperties(this , user);
         this.id = user.getId().getId();
         this.type = user.getId().getType();
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
-        this.address = user.getAddress();
-        this.phone = user.getPhone();
     }
 
 
@@ -82,5 +81,9 @@ public class UserVO {
     private String address;
     private String phone;
 
+    @JsonIgnore
+    public User getEntity() {
+        return new User(new User.Key(this.id , this.type) , this.firstName , this.lastName , this.address , this.phone);
+    }
 
 }

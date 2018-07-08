@@ -26,10 +26,15 @@ public class UserRepositoryImpl extends SimpleCassandraRepository<User, MapId>
 
     @Override
     public <S extends User> S insert(S user) {
-        user.setId(new User.Key(UUIDs.timeBased() , user.getId().getType()));
         final CassandraBatchOperations batchOps = cassandraTemplate.batchOps();
-        insertByType(user , batchOps);
-        batchOps.insert(user);
+        if (user.getId().getId() == null) {
+            user.setId(new User.Key(UUIDs.timeBased() , user.getId().getType()));
+            insertByType(user , batchOps);
+            batchOps.insert(user);
+        } else {
+            updateByType(user , batchOps);
+            batchOps.update(user);
+        }
         batchOps.execute();
         return user;
     }
@@ -37,6 +42,11 @@ public class UserRepositoryImpl extends SimpleCassandraRepository<User, MapId>
     private void insertByType(final User user , final CassandraBatchOperations batchOps) {
         batchOps.insert(new UserByType(new UserByType.Key(user.getId().getType() , user.getId().getId()) , user.getFirstName() , user.getLastName() , user.getAddress() , user.getPhone()));
     }
+
+    private void updateByType(final User user , final CassandraBatchOperations batchOps) {
+        batchOps.update(new UserByType(new UserByType.Key(user.getId().getType() , user.getId().getId()) , user.getFirstName() , user.getLastName() , user.getAddress() , user.getPhone()));
+    }
+
 
     private void deleteByType(final User user , final CassandraBatchOperations batchOps) {
         batchOps.delete(userByTypeRepository.findByUserByTypeKeyTypeAndUserByTypeKeyId(user.getId().getType() , user.getId().getId()));

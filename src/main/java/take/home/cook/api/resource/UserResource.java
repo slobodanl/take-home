@@ -5,15 +5,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import take.home.cook.api.repository.user.UserByTypeRepository;
 import take.home.cook.api.repository.user.UserRepository;
 import take.home.cook.api.resource.utils.VOUtils;
 import take.home.cook.api.resource.valueobjects.UserVO;
 
+import javax.annotation.security.PermitAll;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,4 +39,17 @@ public class UserResource {
         return VOUtils.transform(userByTypeRepository.findAllByUserByTypeKeyType(type) ,UserVO.class , ArrayList::new);
     }
 
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Register new user", notes = "Register new user",  response = UserVO.class)
+    public UserVO addUser(@ApiParam(value = "User type", required = true)  @RequestBody UserVO user) {
+        return new UserVO(userRepository.insert(user.getEntity()));
+    }
+
+    @PermitAll
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Update user details", notes = "Update user details",  response = UserVO.class)
+    public UserVO updateUser(@ApiParam(value = "User type", required = true) @RequestBody UserVO user) {
+        return new UserVO(userRepository.insert(user.getEntity()));
+    }
 }
